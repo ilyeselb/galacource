@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import "./scss/main.scss"
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(
     <BrowserRouter>
@@ -10,4 +10,4 @@ ReactDOM.render(
           
         
     </BrowserRouter>
-    , document.getElementById("root"));
+    , document.getElementById("root"))

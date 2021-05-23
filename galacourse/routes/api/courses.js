@@ -4,31 +4,35 @@ const axios = require("axios");
 const path = require('path');
 const middleware = require("../../utility/middleware")
 const fs = require('fs');
-
 //@route /api/tournaments
 //method POST
 //public
 //get courses 
 
 //joining path of directory 
-const directoryPath = path.join(__dirname, '../../courses');
+const directoryPath = path.join(__dirname, '../../public/courses');
 
-const readDirectory = () => {
-}
-router.get("/", middleware,(req, res) => {
-    console.log("api");
+
+router.get("/",(req, res) => {
     let folders = []
     fs.readdir(directoryPath, (err, files) => {
         files.map((file, index) => {
             folders.push({ title: file, id: index })
         })
+        console.log(files);
+        console.log(directoryPath);
         return res.json(folders)
     })
 });
-router.get("/video/:path", (req, res) => {
-    const directoryPath = path.join(__dirname, '../../courses/' + req.params.path);
-    fs.readdir(directoryPath, (err, files) => {
-        return res.json(files)
+router.get("/video/:path" ,(req, res) => {
+    let folders = []
+    const directoryPathVid = path.join(__dirname, '../../public/courses/' + req.params.path);
+    fs.readdir(directoryPathVid, (err, files) => {
+        files.map((file, index) => {
+            folders.push({ title: file, id: index })
+        })
+        console.log(folders);
+        return res.json(folders)
     })
 });
 

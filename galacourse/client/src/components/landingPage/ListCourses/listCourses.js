@@ -1,16 +1,17 @@
 import React from 'react';
 import { Card, CardContent, Grid, Typography } from '@material-ui/core';
-import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
+import FolderIcon from '@material-ui/icons/Folder';
 const ListCourses = (props) => {
     const { courses } = props
-    const history = useHistory();
-
-  
+    const style = {
+        display: "flex",
+    }
     const listCourses = courses.map(course => <Grid key={course.id} item xs>
         <Link  to={`/video/${course.title}`} params={{ title: course.title }}>
             <Card >
-                <CardContent>
+                <CardContent style={style}>
+                    <FolderIcon />
                     <Typography color="textSecondary" gutterBottom>
                         {course.title}
                     </Typography>
@@ -27,7 +28,7 @@ const ListCourses = (props) => {
             spacing={2}
         >
             {listCourses}
-        </Grid>);
+        </Grid>)
 };
 
 export default ListCourses;

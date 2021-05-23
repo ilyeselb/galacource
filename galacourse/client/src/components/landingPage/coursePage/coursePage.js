@@ -1,59 +1,96 @@
-import { Card, Grid, List, ListItem, ListItemText, ListSubheader } from '@material-ui/core';
-import React from 'react';
-import ReactPlayer from 'react-player'
+import React, { useEffect, useRef, useState } from "react";
+import { Card, Grid, List, ListItem, ListItemIcon, ListItemText, ListSubheader } from "@material-ui/core";
+import axios from "axios";
 
-const CoursePage = () => {
+const CoursePage = (props) => {
+  const [videos, setVideos] = useState([]);
+  const [video, setVideo] = useState(null);
+  const videoRef = useRef();
+  const previousUrl = useRef(video);
 
-    useEffect(() => {
-        axios.get("http://localhost:8080/courses/video/"+props.match.params.title).then(course => {
-            setCourses(prev => [...course.data])
-        })
-        console.log(courses);
-    },[])
-    const video = {
-       
-        width: "-moz-fit-content",
-        width:" fit-content" }
-    return (
-        <div>
-            <Grid
-                container
-                direction="row"
-                justify="center"
-                alignItems="center"
-                spacing={2}
-            > 
-           
-                 
-                <Grid  item md={8}>
-                    <Card>
-                    <ReactPlayer style={video}  url='https://www.youtube.com/watch?v=ysz5S6PUM-U' />
-                    </Card>
-                </Grid>
-                <Grid item md={4}>
-                    <Card >
-                        <List subheader={<li />}>
-                            {[0, 1, 2, 3, 4].map((sectionId) => (
-                                <li key={`section-${sectionId}`} >
-                                    <ul >
-                                        <ListSubheader>{`I'm sticky ${sectionId}`}</ListSubheader>
-                                        {[0, 1, 2].map((item) => (
-                                            <ListItem key={`item-${sectionId}-${item}`}>
-                                                <ListItemText primary={`Item ${item}`} />
-                                            </ListItem>
-                                        ))}
-                                    </ul>
-                                </li>
-                            ))}
-                        </List>
-                    </Card>
+  useEffect(() => {
+    if (previousUrl.current === video) {
+      return;
+    }
 
-                </Grid>
+    if (videoRef.current) {
+      videoRef.current.load();
+    }
 
-
-            </Grid>);
-        </div>
-    );
+    previousUrl.current = video;
+  }, [video]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/courses/video/" + props.match.params.title)
+      .then((vid) => {
+        setVideos([...vid.data]);
+        setVideo(
+          "http://localhost:8080/courses/" +
+            props.match.params.title +
+            "/" +
+            vid.data[0].title
+        );
+      });
+  }, []);
+  return (
+    <div>
+      <Grid
+        container
+        direction="row"
+        justify="center"
+        alignItems="center"
+      >
+        <Grid item md={9}>
+          <video ref={videoRef} width="900" height="420" controls autoPlay>
+            <source src={video} />
+          </video>
+        </Grid>
+        <Grid item md={3}>
+          <Card>
+            <List
+              component="nav"
+              aria-label="contacts"
+            >
+                {videos.map((vid, index) => (<ListItem key={index}   onClick={() =>
+                        setVideo(
+                          "http://localhost:8080/courses/" +
+                            props.match.params.title +
+                            "/" +
+                            vid.title
+                        )
+                      } button>
+                <ListItemIcon>
+                </ListItemIcon>
+                <ListItemText primary={vid.title.split('.').slice(0, -1).join('.')}/>
+              </ListItem> ))}
+              
+            </List>
+            {/* <List subheader={<li />}>
+              {videos.map((vid, index) => (
+                <li key={`${index}`}>
+                  <ul>
+                    <ListSubheader
+                      onClick={() =>
+                        setVideo(
+                          "http://localhost:8080/courses/" +
+                            props.match.params.title +
+                            "/" +
+                            vid.title
+                        )
+                      }
+                    >
+                      {` ${vid.title}`}
+                    </ListSubheader>
+                  </ul>
+                </li>
+              ))}
+            </List> */}
+          </Card>
+        </Grid>
+      </Grid>
+      
+    </div>
+  );
 };
 
 export default CoursePage;

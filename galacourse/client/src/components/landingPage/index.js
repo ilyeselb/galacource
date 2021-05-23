@@ -16,7 +16,7 @@ const LandingPage = () => {
             <ListCourses courses={courses}/>
             {/* <CoursePage /> */}
         </div>
-    );
+    )
 };
 
 export default LandingPage;

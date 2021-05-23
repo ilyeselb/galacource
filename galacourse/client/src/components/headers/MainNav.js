@@ -1,18 +1,21 @@
-import { AppBar, IconButton, Toolbar, Typography } from '@material-ui/core'
-import React from 'react'
+import {
+  AppBar,
+  Toolbar,
+} from "@material-ui/core";
+import React from "react";
+import {  Link } from "react-router-dom";
 
 const MainNav = () => {
-    return (
-        <AppBar position="static">
-        <Toolbar variant="dense">
-          <IconButton edge="start"  color="inherit" aria-label="menu">
-          </IconButton>
-          <Typography variant="h6" color="inherit">
-            Photos
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    )
-}
+  return (
+    <AppBar position="static">
+      <Toolbar variant="dense">
 
-export default MainNav
+        <Link to={"/"}>
+         <p style={{color:"white"}}>Home</p> 
+       </Link>
+      </Toolbar>
+    </AppBar>
+  );
+};
+
+export default  (MainNav);
